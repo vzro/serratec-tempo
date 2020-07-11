@@ -85,24 +85,24 @@
         })
 
         function getElements() {
-            container    = document.querySelector('#container')
-            weatherTitle = document.querySelector('#title')
-            weatherGif   = document.querySelector('#gif')
-            weatherTip   = document.querySelector('#tip')
+            weatherContainer = document.querySelector('#container')
+            weatherTitle     = document.querySelector('#title')
+            weatherGif       = document.querySelector('#gif')
+            weatherTip       = document.querySelector('#tip')
         }
 
 
         function render(weather) {
-            weatherTitle.innerText           = weather.title.toLowerCase();
-            weatherTip.innerText             = weather.tip.toLowerCase();
-            weatherGif.style.backgroundImage = weather.gif;
-            container.style.background       = weather.bg;
+            weatherTitle.innerText            = weather.title.toLowerCase();
+            weatherTip.innerText              = weather.tip.toLowerCase();
+            weatherGif.style.backgroundImage  = weather.gif;
+            weatherContainer.style.background = weather.bg;
         }
 
 
         function checkWeather(weatherData) {
             const weatherStatus = weatherData.weather[0]['main']
-            const weather = {title: "", gif: "", tip: "", bg: ""}
+            const weather = {title: "", tip: "", gif: "", bg: ""}
 
             switch (weatherStatus) {
                 case 'Rain':
@@ -159,7 +159,8 @@
 
 
         async function getWeather() {
-            const weather = await fetch('http://api.openweathermap.org/data/2.5/weather?q=teresopolis,br&appid=032e60cbafbe8333f3d6ee9c5a3309b3')
+            weatherCityCountry = 'rio,br'
+            const weather = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${weatherCityCountry}&appid=032e60cbafbe8333f3d6ee9c5a3309b3`)
             const weatherData = await weather.json()
             checkWeather(weatherData)
         }
