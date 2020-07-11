@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>TereTempo</title>
+</head>
+<body>
+
+    <div id="container">
+        <div id="wrapper">
+            <h1 id="title">It's time!</h1>
+            <div id="gif"></div>
+            <h3 id="tip">This is a default tip.</h3>
+        </div>
+
+    </div>
+
+    <style>
+        
+        @import url('https://fonts.googleapis.com/css2?family=Loved+by+the+King&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: 0;
+            border: 0;
+        }
+        #container {
+            display: grid;
+            grid-template-columns: 100%;
+            justify-items: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background:rgb(118, 146, 168);
+        }
+        #wrapper {
+            /* background: green; */
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            grid-row-gap: 20px;
+        }
+        #title {
+            /* background:red; */
+            font-family: 'Loved by the King', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            letter-spacing: 7px;
+            color: whitesmoke;
+            font-size: 3.5em;
+            text-shadow: -2px 2px 1px black;
+            line-height: 140%;
+            text-align: center;
+        }
+        #gif {
+            background: gold;
+            width: 300px;
+            height: 240px;
+            border-radius: 50%;
+            border: 5px solid whitesmoke;
+            background-color: unset;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #tip {
+            font-family: 'Cedarville Cursive', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: whitesmoke;
+            letter-spacing: 10px;
+            font-size: 2em;
+            font-weight: lighter;
+            text-align: center;
+            text-shadow: -2px 2px 1px black;
+            width: 340px;
+        }
+
+    </style>
+
+    <script>
+
+        window.addEventListener('load', () => {
+            getElements();
+            getWeather();
+        })
+
+        function getElements() {
+            container    = document.querySelector('#container')
+            weatherTitle = document.querySelector('#title')
+            weatherGif   = document.querySelector('#gif')
+            weatherTip   = document.querySelector('#tip')
+        }
+
+
+        function render(weather) {
+            weatherTitle.innerText           = weather.title.toLowerCase();
+            weatherTip.innerText             = weather.tip.toLowerCase();
+            weatherGif.style.backgroundImage = weather.gif;
+            container.style.background       = weather.bg;
+        }
+
+
+        function checkWeather(weatherData) {
+            const weatherStatus = weatherData.weather[0]['main']
+            const weather = {title: "", gif: "", tip: "", bg: ""}
+
+            switch (weatherStatus) {
+                case 'Rain':
+                    weather.title = "It's raining!"
+                    weather.tip   = "You'll need an umbrella!"
+                    weather.gif   = "url('https://i.giphy.com/media/6BqaJYUawVTK8/source.gif')"
+                    weather.bg    = "rgb(32, 145, 139)"
+                    render(weather)
+                    break;
+                case 'Drizzle':
+                    weather.title = "It's drizzling."
+                    weather.tip   = "You'll need a hoodie."
+                    weather.gif   = "url('https://i.giphy.com/media/c8CX04yt56lDW/source.gif')"
+                    weather.bg    = "rgb(68, 141, 146)"
+                    render(weather);
+                    break;
+                case 'Thunderstorm':
+                    weather.title = "Thunderstorm!"
+                    weather.tip   = "You should stay in if you can."
+                    weather.gif   = "url('https://i.giphy.com/media/NWFgmiGdF4rGo/source.gif')"
+                    weather.bg    = "rgb(3, 31, 49)"
+                    render(weather)
+                    break;
+                case 'Clouds':
+                    weather.title = "It's cloudy."
+                    weather.tip   = "Find your vitamin D elsewhere..."
+                    weather.gif   = "url('https://i.giphy.com/media/Y3jU9pU99ZC5SKljQY/source.gif')"
+                    weather.bg    = "rgb(118, 146, 168)"
+                    render(weather);
+                    break;
+                case 'Snow':
+                    weather.title = "It's snowing."
+                    weather.tip   = "This has got to be a joke."
+                    weather.gif   = "url('https://i.giphy.com/media/SAC0wTRQYO2Y0/source.gif')"
+                    weather.bg    = "rgb(204, 206, 200)"
+                    render(weather);
+                    break;
+                case 'Atmosphere':
+                    weather.title = "It's weird."
+                    weather.tip   = "Could be fog, mist, tornados, locusts..."
+                    weather.gif   = "url('https://i.giphy.com/ib9gZrV0DnrIInPW79.gif')"
+                    weather.bg    = "rgb(241, 89, 89)"
+                    render(weather);
+                    break;
+                default:
+                    weather.title = "It's a beautiful day!"
+                    weather.tip   = "Wear a mask outside, though!"
+                    weather.gif   = "url('https://i.giphy.com/H6zpcfJH69s5hs8RNK.gif')"
+                    weather.bg    = "rgb(0, 198, 255)"
+                    render(weather);
+            }
+
+        }
+
+
+        async function getWeather() {
+            const weather = await fetch('http://api.openweathermap.org/data/2.5/weather?q=teresopolis,br&appid=032e60cbafbe8333f3d6ee9c5a3309b3')
+            const weatherData = await weather.json()
+            checkWeather(weatherData)
+        }
+
+
+    </script>
+</body>
+</html>
+
